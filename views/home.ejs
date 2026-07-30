@@ -1,0 +1,36 @@
+<%- include('partials/head') %>
+    </head>
+    <body class="bg-gray-100">
+        <header>
+            <!-- Navbar -->
+            <%- include('partials/nav') %>
+        </header>
+        <main>
+            <h2>
+                welcome to StayEase.
+            </h2>
+            <h2>
+                Here are our registered homes : 
+            </h2>
+            <ul>
+                <% registeredHomes.forEach(home => { %>
+                    <li>
+                        <%= home.houseName %>
+                    </li>
+                    <li>
+                        <%= home.price %>
+                    </li>
+                    <li>
+                        <%= home.location %>
+                    </li>
+                    <li>
+                        <%= home.rating %>
+                    </li>
+                    <li>
+                        <%= home.photoUrl %>
+                    </li>
+                <% }) %>
+            </ul>
+        </main>
+    </body>
+</html>
