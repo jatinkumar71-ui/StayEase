@@ -26,7 +26,7 @@ app.use(hostRouter);
 app.use(express.static(path.join(rootDir, 'public')));
 
 app.use((req, res, next) => {
-    res.status(404).render('404',{pageTitle : '404 Error'});
+    res.status(404).render('404',{pageTitle : '404 Error', currentPage: '404'});
 });
 
 const PORT = 3001;

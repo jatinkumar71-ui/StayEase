@@ -12,7 +12,7 @@ const userRouter = express.Router();
 
 userRouter.get("/", (req, res, next) => {
     console.log(registeredHomes);
-    res.render('home', {registeredHomes : registeredHomes, pageTitle : 'Home Page'});
+    res.render('home', {registeredHomes : registeredHomes, pageTitle : 'Home Page', currentPage: 'home'});
 });
 
 module.exports = userRouter;
