@@ -10,9 +10,37 @@
         <ul class="flex items-center gap-4 text-white font-medium">
             <li>
                 <a href="/" 
+                class=" <%= currentPage === 'index' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
+                 py-2 px-4 transition duration-300"
+                > StayEase </a>
+            </li>
+
+            <li>
+                <a href="/homes" 
                 class=" <%= currentPage === 'home' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
                  py-2 px-4 transition duration-300"
-                > Home </a>
+                > Homes-list</a>
+            </li>
+
+            <li>
+                <a href="/favourites" 
+                class=" <%= currentPage === 'favourites' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
+                 py-2 px-4 transition duration-300"
+                >favourites</a>
+            </li>
+
+            <li>
+                <a href="/bookings" 
+                class="<%= currentPage === 'bookings' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
+                py-2 px-4 transition duration-300"
+                >Bookings</a>
+            </li>
+
+            <li>
+                <a href="/host/host-home-list" 
+                class="<%= currentPage === 'host-homes' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
+                py-2 px-4 transition duration-300"
+                > host Homes</a>
             </li>
 
             <li>
