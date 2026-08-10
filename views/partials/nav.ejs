@@ -15,6 +15,8 @@
                 > StayEase </a>
             </li>
 
+            <% if(isLoggedIn){ %>
+
             <li>
                 <a href="/homes" 
                 class=" <%= currentPage === 'home' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
@@ -49,6 +51,38 @@
                 py-2 px-4 transition duration-300"
                 > Add Home </a>
             </li>
+
+            <% } %>
+
+            
+            <% if(!isLoggedIn){ %>
+            <li>
+                <a href="/signup" 
+                class=" hover:bg-blue-500
+                py-2 px-4 transition duration-300"
+                >signUp</a>
+            </li>
+
+            <li>
+                <a href="/login" 
+                class=" hover:bg-blue-500
+                py-2 px-4 transition duration-300"
+                >login</a>
+            </li>
+
+            <% } else{ %>
+            <li>
+                <form action="/logout" method="POST">
+                    <button 
+                        type="submit"
+                        class="hover:bg-blue-500
+                        py-2 px-4 transition duration-300"
+                    >
+                    Logout</button>
+                </form>
+            </li>
+            <% }%>
+            
         </ul>
 
     </div>

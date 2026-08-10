@@ -1,0 +1,103 @@
+<%- include('../partials/head') %>
+</head>
+    <body>
+        <header>
+            <!-- Navbar -->
+            <%- include('../partials/nav') %>
+        </header>
+        <main class="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-md">
+            <h1 class="text-3xl font-bold mb-6 text-center text-blue-600">
+                Create Your Account
+            </h1>
+            <form action="/signup" method="POST" class="max-w-md mx-auto">
+                <% if(errors.length > 0){ %>
+                    <div class="bg-red-100 border border-red-400 text-red-600 px-8 py-2 rounded reative" role="alert">
+                        <strong class="font-bold">Error!</strong>
+                        <span class="block sm:inline">
+                            <% errors.forEach(error => { %>
+                            <li><%= error %></li>
+                            <% }) %>
+                        </span>
+                    </div>
+                <% } %>
+
+                <input
+                    type="text"
+                    name="firstName"
+                    placeholder="First Name"
+                    value="<%= oldInput.firstName ? oldInput.firstName : '' %>"
+                    class="w-full px-4 py-2 mt-4 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required 
+                />
+
+                <input
+                    type="text"
+                    name="lastName"
+                    placeholder="Last Name"
+                    value="<%= oldInput.lastName ? oldInput.lastName : '' %>"
+                    class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                />
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    value="<%= oldInput.email ? oldInput.email : '' %>"
+                    class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required 
+                />
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter your passward"
+                    class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required 
+                />
+
+                <input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirm your passward"
+                    class="w-full px-4 py-2 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required 
+                />
+
+                <div class="p-2 bg-gray-50 rounded-lg border border-gray-200">
+                    <p class="text-gray-600 font-semibold mb-3"> User Type : </p>
+                    <label class="inline-flex items-center mr-6 cursor-pointer">
+                        <input
+                            type="radio" name="userType" value="guest" id="guest"
+                            class="w-4 h-4 text-blue-600 focus:ring-blue-500" <% if(oldInput.userType === 'guest'){ %>checked<% } %>
+                        /> <span class="ml-2 text-gray-600">guest</span>
+                    </label>
+
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input
+                            type="radio" name="userType" value="host" id="host"
+                            class="w-4 h-4 text-blue-600 focus:ring-blue-500" <% if(oldInput.userType === 'host'){ %>checked<% } %>
+                        /> <span class="ml-2 text-gray-600">host</span> 
+                    </label>
+                </div>
+
+                <br>
+                <div class="flex items-center gap-2 mb-3"> 
+                    <input 
+                        type="checkbox" name="terms" required class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500" 
+                    /> 
+                    <label class="text-sm text-gray-600 cursor-pointer"> I agree to the terms and conditions. </label> 
+                </div>
+                <br>
+
+
+
+                <input
+                    type="submit"
+                    value="Register"
+                    class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-red-500 transition duration-300" 
+                /> 
+            </form>
+        </main>
+    </body>
+</html>
