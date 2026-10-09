@@ -5,9 +5,10 @@ const path = require('path');
 
 // External Modules
 const express = require('express');
-const {mongoose} = require('mongoose');
+const mongoose = require('mongoose');
 const session = require('express-session');
 const mongoDbStore = require('connect-mongodb-session')(session);
+const multer = require('multer');
 
 
 // Local Modules
@@ -25,13 +26,50 @@ const store = new mongoDbStore({
     uri: process.env.DB_PATH,
     collection: 'session',
 })
+store.on('error', (error) => {
+    console.log("SESSION STORE ERROR:", error);
+});
 
 app.use((req, res, next) => {
     console.log(req.url, req.method);
     next();
 });
 
-app.use(express.urlencoded());
+const randomString = (length) =>{
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+}
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, randomString(10) + '-' + file.originalname);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true); 
+    } else {
+        cb(null, false);
+    }
+};
+const multerOptions = {
+    storage: storage,
+    fileFilter: fileFilter
+};
+
+app.use(express.urlencoded({ extended: true }));
+app.use(multer(multerOptions).single('photoUrl'));
+app.use(express.static(path.join(rootDir, 'public')));
+app.use('/uploads', express.static(path.join(rootDir, 'uploads')));
+app.use('/host/uploads', express.static(path.join(rootDir, 'uploads')));
+app.use('/homes/uploads', express.static(path.join(rootDir, 'uploads')));
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -41,22 +79,25 @@ app.use(session({
 }))
 
 app.use((req, res, next) => {
+    console.log("SESSION LOGIN:", req.session.isLoggedIn);
+    console.log("SESSION USER:", req.session.user);
+    console.log("SESSION ID:", req.sessionID);
     req.isLoggedIn = req.session.isLoggedIn;
+    res.locals.isLoggedIn = req.session.isLoggedIn;
+    res.locals.user = req.session.user;
     next();
 })
 
 app.use(authRouter);
 app.use(storeRouter);
-app.use('/host', hostRouter); 
 app.use('/host', (req, res, next) => {
     if(req.isLoggedIn){
         next();
     }else{
-        redirect('/login');
+        res.redirect('/login');
     }
 })
-
-app.use(express.static(path.join(rootDir, 'public')));
+app.use('/host', hostRouter); 
 
 app.use(errorController.pageNotFound);
 

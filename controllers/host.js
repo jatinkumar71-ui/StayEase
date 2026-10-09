@@ -1,4 +1,5 @@
 const Home = require("../models/homes");
+const fs = require('fs');
 
 exports.getAddHome = (req, res, next) => {
     res.render('host/edit-home',{
@@ -6,6 +7,7 @@ exports.getAddHome = (req, res, next) => {
         currentPage: 'add-home',
         editing : false,
         isLoggedIn: req.isLoggedIn,
+        user: req.session.user,
     });
 }
 
@@ -25,12 +27,22 @@ exports.getEditHome = (req, res, next) => {
             currentPage : 'host-home',
             editing : editing,
             isLoggedIn: req.isLoggedIn,
+            user: req.session.user,
         });
     });
 }
 
 exports.postAddHome = (req, res, next) => {
-    const {houseName, price, location, rating, photoUrl, description} = req.body;
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
+    const {houseName, price, location, rating, description} = req.body;
+
+    if(!req.file){
+        console.log("No file uploaded");
+        return res.redirect('/host/add-home');
+    }
+    const photoUrl = req.file.path;
+
     const home = new Home({houseName, price, location, rating, photoUrl, description});
     home.save().then( () => {
         console.log('Home saved successfully')
@@ -39,6 +51,7 @@ exports.postAddHome = (req, res, next) => {
         pageTitle : 'home added page', 
         currentPage: 'home-added',
         isLoggedIn: req.isLoggedIn,
+        user: req.session.user,
     });
 }
 
@@ -49,20 +62,31 @@ exports.getHostHomes = (req, res, next) => {
             pageTitle : 'host Homes list', 
             currentPage: 'host-homes',
             isLoggedIn: req.isLoggedIn,
+            user: req.session.user,
         });
     });
 }
 
 exports.postEditHome = (req, res, next) => {
     console.log(req.body);
-    const {id, houseName, price, location, rating, photoUrl, description} = req.body;
+    const {id, houseName, price, location, rating, description} = req.body;
+
     Home.findById(id).then((home) => {
         home.houseName = houseName;
         home.price = price;
         home.location = location;
         home.rating = rating;
-        home.photoUrl = photoUrl;
         home.description = description;
+
+        if(req.file){
+            fs.unlink(home.photoUrl, (err) => {
+                if(err){
+                    console.log("Error while deleting file", err);
+                }
+            });
+            home.photoUrl = req.file.path;
+        }
+        
         home.save().then(result => {
             console.log('home updated : ', home);
         }).catch( error => {
@@ -72,6 +96,7 @@ exports.postEditHome = (req, res, next) => {
             pageTitle : 'home edited page', 
             currentPage: 'host-home',
             isLoggedIn: req.isLoggedIn,
+            user: req.session.user,
         })
     }).catch(error => {
         console.log("Error while finding home", error);

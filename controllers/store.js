@@ -9,6 +9,7 @@ exports.getIndex = (req, res, next) => {
             pageTitle : 'Home Page', 
             currentPage: 'index',
             isLoggedIn: req.isLoggedIn,
+            user: req.session.user,
         });
     });
 }
@@ -20,6 +21,7 @@ exports.getHomes = (req, res, next) => {
             pageTitle : 'Home list', 
             currentPage: 'home',
             isLoggedIn: req.isLoggedIn,
+            user: req.session.user,
         });
     });
 }
@@ -29,6 +31,7 @@ exports.getBookings = (req, res, next) => {
             pageTitle : 'my bookings', 
             currentPage: 'bookings',
             isLoggedIn: req.isLoggedIn,
+            user: req.session.user,
         });
 }
 
@@ -41,6 +44,7 @@ exports.getFavouriteList = (req, res, next) => {
             pageTitle : 'my favourites', 
             currentPage: 'favourite-list',
             isLoggedIn: req.isLoggedIn,
+            user: req.session.user,
         });
     }); 
 }
@@ -88,6 +92,7 @@ exports.getHomeDetails = (req, res, next) => {
                 pageTitle : 'home details', 
                 currentPage: 'home',
                 isLoggedIn: req.isLoggedIn,
+                user: req.session.user,
             });
         }
     });

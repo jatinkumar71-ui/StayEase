@@ -16,42 +16,42 @@
             </li>
 
             <% if(isLoggedIn){ %>
+                <% if(user && user.userType === 'guest'){ %>
+                    <li>
+                        <a href="/homes" 
+                        class=" <%= currentPage === 'home' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
+                        py-2 px-4 transition duration-300"
+                        > Homes-list</a>
+                    </li>
 
-            <li>
-                <a href="/homes" 
-                class=" <%= currentPage === 'home' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
-                 py-2 px-4 transition duration-300"
-                > Homes-list</a>
-            </li>
+                    <li>
+                        <a href="/favourites" 
+                        class=" <%= currentPage === 'favourite-list' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
+                        py-2 px-4 transition duration-300"
+                        >favourites</a>
+                    </li>
 
-            <li>
-                <a href="/favourites" 
-                class=" <%= currentPage === 'favourite-list' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
-                 py-2 px-4 transition duration-300"
-                >favourites</a>
-            </li>
+                    <li>
+                        <a href="/bookings" 
+                        class="<%= currentPage === 'bookings' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
+                        py-2 px-4 transition duration-300"
+                        >Bookings</a>
+                    </li>
+                <% } else { %>
+                    <li>
+                        <a href="/host/host-home-list" 
+                        class="<%= currentPage === 'host-homes' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
+                        py-2 px-4 transition duration-300"
+                        > host Homes</a>
+                    </li>
 
-            <li>
-                <a href="/bookings" 
-                class="<%= currentPage === 'bookings' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
-                py-2 px-4 transition duration-300"
-                >Bookings</a>
-            </li>
-
-            <li>
-                <a href="/host/host-home-list" 
-                class="<%= currentPage === 'host-homes' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
-                py-2 px-4 transition duration-300"
-                > host Homes</a>
-            </li>
-
-            <li>
-                <a href="/host/add-home" 
-                class="<%= currentPage === 'add-home' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
-                py-2 px-4 transition duration-300"
-                > Add Home </a>
-            </li>
-
+                    <li>
+                        <a href="/host/add-home" 
+                        class="<%= currentPage === 'add-home' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
+                        py-2 px-4 transition duration-300"
+                        > Add Home </a>
+                    </li>
+                <% } %>
             <% } %>
 
             
