@@ -36,18 +36,27 @@ exports.getBookings = (req, res, next) => {
 }
 
 exports.getFavouriteList = (req, res, next) => {
-    Favourite.find().populate('houseId')
-    .then((favourites) => {
-        const favouriteHomes = favourites.map(fav => fav.houseId);
-        res.render('store/favourite-list', {
-            favouriteHomes : favouriteHomes, 
-            pageTitle : 'my favourites', 
-            currentPage: 'favourite-list',
-            isLoggedIn: req.isLoggedIn,
-            user: req.session.user,
+    Favourite.find()
+        .populate('houseId')
+        .then((favourites) => {
+            // Remove favourites whose home no longer exists
+            const favouriteHomes = favourites
+                .map(fav => fav.houseId)
+                .filter(home => home !== null);
+
+            res.render('store/favourite-list', {
+                favouriteHomes: favouriteHomes,
+                pageTitle: 'my favourites',
+                currentPage: 'favourite-list',
+                isLoggedIn: req.isLoggedIn,
+                user: req.session.user,
+            });
+        })
+        .catch(error => {
+            console.log('Error fetching favourites:', error);
+            next(error);
         });
-    }); 
-}
+};
 
 exports.postAddToFavourite = (req, res, next) => {
     const homeId = req.body.id;

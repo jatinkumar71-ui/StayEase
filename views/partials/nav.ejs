@@ -1,89 +1,96 @@
-<nav class="bg-blue-600 shadow-lg">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-blue-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+        <div class="min-h-[76px] flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 py-4 sm:py-0">
 
-        <!-- Logo -->
-        <h1 class="text-4xl font-bold text-white">
-            StayEase
-        </h1>
+            <!-- Logo -->
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-blue-700">
+                Stay<span class="text-blue-500">Ease</span>
+            </h1>
 
-        <!-- Navigation Links -->
-        <ul class="flex items-center gap-4 text-white font-medium">
-            <li>
-                <a href="/" 
-                class=" <%= currentPage === 'index' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
-                 py-2 px-4 transition duration-300"
-                > StayEase </a>
-            </li>
+            <!-- Navigation Links -->
+            <ul class="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-700">
 
-            <% if(isLoggedIn){ %>
-                <% if(user && user.userType === 'guest'){ %>
-                    <li>
-                        <a href="/homes" 
-                        class=" <%= currentPage === 'home' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
-                        py-2 px-4 transition duration-300"
-                        > Homes-list</a>
-                    </li>
+                <li>
+                    <a href="/"
+                       class="<%= currentPage === 'index' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-700' %> inline-flex items-center rounded-xl px-4 py-2.5 transition-all duration-200">
+                        StayEase
+                    </a>
+                </li>
 
-                    <li>
-                        <a href="/favourites" 
-                        class=" <%= currentPage === 'favourite-list' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
-                        py-2 px-4 transition duration-300"
-                        >favourites</a>
-                    </li>
+                <% if(isLoggedIn){ %>
+                    <% if(user && user.userType === 'guest'){ %>
 
-                    <li>
-                        <a href="/bookings" 
-                        class="<%= currentPage === 'bookings' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
-                        py-2 px-4 transition duration-300"
-                        >Bookings</a>
-                    </li>
-                <% } else { %>
-                    <li>
-                        <a href="/host/host-home-list" 
-                        class="<%= currentPage === 'host-homes' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
-                        py-2 px-4 transition duration-300"
-                        > host Homes</a>
-                    </li>
+                        <li>
+                            <a href="/homes"
+                               class="<%= currentPage === 'home' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-700' %> inline-flex items-center rounded-xl px-4 py-2.5 transition-all duration-200">
+                                Homes-list
+                            </a>
+                        </li>
 
-                    <li>
-                        <a href="/host/add-home" 
-                        class="<%= currentPage === 'add-home' ? 'bg-blue-500' : 'hover:bg-blue-500' %> 
-                        py-2 px-4 transition duration-300"
-                        > Add Home </a>
-                    </li>
+                        <li>
+                            <a href="/favourites"
+                               class="<%= currentPage === 'favourite-list' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-700' %> inline-flex items-center rounded-xl px-4 py-2.5 transition-all duration-200">
+                                Favourites
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/bookings"
+                               class="<%= currentPage === 'bookings' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-700' %> inline-flex items-center rounded-xl px-4 py-2.5 transition-all duration-200">
+                                Bookings
+                            </a>
+                        </li>
+
+                    <% } else { %>
+
+                        <li>
+                            <a href="/host/host-home-list"
+                               class="<%= currentPage === 'host-homes' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-700' %> inline-flex items-center rounded-xl px-4 py-2.5 transition-all duration-200">
+                                Host Homes
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/host/add-home"
+                               class="<%= currentPage === 'add-home' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-700' %> inline-flex items-center rounded-xl px-4 py-2.5 transition-all duration-200">
+                                Add Home
+                            </a>
+                        </li>
+
+                    <% } %>
                 <% } %>
-            <% } %>
 
-            
-            <% if(!isLoggedIn){ %>
-            <li>
-                <a href="/signup" 
-                class=" hover:bg-blue-500
-                py-2 px-4 transition duration-300"
-                >signUp</a>
-            </li>
+                <% if(!isLoggedIn){ %>
 
-            <li>
-                <a href="/login" 
-                class=" hover:bg-blue-500
-                py-2 px-4 transition duration-300"
-                >login</a>
-            </li>
+                    <li>
+                        <a href="/signup"
+                           class="inline-flex items-center rounded-xl border border-blue-600 px-5 py-2.5 text-blue-700 hover:bg-blue-50 transition-all duration-200">
+                            Sign Up
+                        </a>
+                    </li>
 
-            <% } else{ %>
-            <li>
-                <form action="/logout" method="POST">
-                    <button 
-                        type="submit"
-                        class="hover:bg-blue-500
-                        py-2 px-4 transition duration-300"
-                    >
-                    Logout</button>
-                </form>
-            </li>
-            <% }%>
-            
-        </ul>
+                    <li>
+                        <a href="/login"
+                           class="inline-flex items-center rounded-xl bg-blue-600 px-5 py-2.5 text-white shadow-md shadow-blue-200 hover:bg-blue-700 hover:shadow-lg transition-all duration-200">
+                            Login
+                        </a>
+                    </li>
 
+                <% } else { %>
+
+                    <li>
+                        <form action="/logout" method="POST">
+                            <button
+                                type="submit"
+                                class="inline-flex items-center rounded-xl border border-slate-200 px-4 py-2.5 text-slate-700 hover:border-red-200 hover:bg-red-50 hover:text-red-600 transition-all duration-200">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+
+                <% } %>
+
+            </ul>
+        </div>
     </div>
 </nav>
