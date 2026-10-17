@@ -1,5 +1,6 @@
 const Home = require("../models/homes");
 const fs = require('fs');
+const { cloudinary } = require('../cloudinary');
 
 exports.getAddHome = (req, res, next) => {
     res.render('host/edit-home',{
@@ -43,7 +44,7 @@ exports.postAddHome = (req, res, next) => {
     }
     const photoUrl = req.file.path;
 
-    const home = new Home({houseName, price, location, rating, photoUrl, description});
+    const home = new Home({houseName, price, location, rating, photoUrl, description, hostId: req.session.user._id});
     home.save().then( () => {
         console.log('Home saved successfully')
     })
@@ -56,7 +57,7 @@ exports.postAddHome = (req, res, next) => {
 }
 
 exports.getHostHomes = (req, res, next) => {
-    Home.find().then(registeredHomes => {
+    Home.find({hostId: req.session.user._id}).then(registeredHomes => {
         res.render('host/host-home-list', {
             registeredHomes : registeredHomes, 
             pageTitle : 'host Homes list', 
@@ -68,47 +69,60 @@ exports.getHostHomes = (req, res, next) => {
 }
 
 exports.postEditHome = (req, res, next) => {
-    console.log(req.body);
-    const {id, houseName, price, location, rating, description} = req.body;
+    const { id, houseName, price, location, rating, description } = req.body;
 
-    Home.findById(id).then((home) => {
+    Home.findOne({
+        _id: id,
+        hostId: req.session.user._id
+    })
+    .then((home) => {
+        if (!home) {
+            return res.status(403).send('You are not authorized to edit this home');
+        }
+
         home.houseName = houseName;
         home.price = price;
         home.location = location;
         home.rating = rating;
         home.description = description;
 
-        if(req.file){
-            fs.unlink(home.photoUrl, (err) => {
-                if(err){
-                    console.log("Error while deleting file", err);
-                }
-            });
+        if (req.file) {
             home.photoUrl = req.file.path;
         }
-        
-        home.save().then(result => {
-            console.log('home updated : ', home);
-        }).catch( error => {
-            console.log("Error while updating ", error);
-        })
-        res.render('host/home-edited',{
-            pageTitle : 'home edited page', 
+
+        return home.save();
+    })
+    .then((result) => {
+        if (!result) return;
+
+        res.render('host/home-edited', {
+            pageTitle: 'home edited page',
             currentPage: 'host-home',
             isLoggedIn: req.isLoggedIn,
             user: req.session.user,
-        })
-    }).catch(error => {
-        console.log("Error while finding home", error);
+        });
     })
-}
+    .catch(error => {
+        console.log('Error while editing home:', error);
+        next(error);
+    });
+};
+
 
 exports.postDeleteHome = (req, res, next) => {
     const homeId = req.params.homeId;
-    Home.findByIdAndDelete(homeId).then(() => {
+
+    Home.findOneAndDelete({
+        _id: homeId, 
+        hostId: req.session.user._id
+    })
+    .then((deletedHome) => {
+        if(!deletedHome){
+            return res.status(403).send('You are not authorized to delete this home');
+        }
         res.redirect('/host/host-home-list');
-    }).catch(error => {
+    })
+    .catch(error => {
         console.log('Error while deleting', error);
     });
-    
 };

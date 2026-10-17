@@ -17,6 +17,7 @@ const hostRouter = require('./routes/host');
 const authRouter = require('./routes/auth');
 const rootDir = require('./utils/pathUtil');
 const errorController = require("./controllers/errors");
+const {storage} = require('./cloudinary');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -35,25 +36,25 @@ app.use((req, res, next) => {
     next();
 });
 
-const randomString = (length) =>{
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return result;
-}
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, randomString(10) + '-' + file.originalname);
-    }
-});
+// const randomString = (length) =>{
+//     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+//     let result = '';
+//     for (let i = 0; i < length; i++) {
+//         result += characters.charAt(Math.floor(Math.random() * characters.length));
+//     }
+//     return result;
+// }
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, 'uploads/');
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, randomString(10) + '-' + file.originalname);
+//     }
+// });
 
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    if (['image/jpeg', 'image/png', 'image/webp'].includes(file.mimetype)) {
         cb(null, true); 
     } else {
         cb(null, false);
@@ -67,9 +68,9 @@ const multerOptions = {
 app.use(express.urlencoded({ extended: true }));
 app.use(multer(multerOptions).single('photoUrl'));
 app.use(express.static(path.join(rootDir, 'public')));
-app.use('/uploads', express.static(path.join(rootDir, 'uploads')));
-app.use('/host/uploads', express.static(path.join(rootDir, 'uploads')));
-app.use('/homes/uploads', express.static(path.join(rootDir, 'uploads')));
+// app.use('/uploads', express.static(path.join(rootDir, 'uploads')));
+// app.use('/host/uploads', express.static(path.join(rootDir, 'uploads')));
+// app.use('/homes/uploads', express.static(path.join(rootDir, 'uploads')));
 
 app.use(session({
     secret: process.env.SESSION_SECRET,

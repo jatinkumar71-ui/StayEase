@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Favourite = require('./favourite');
-const favourite = require('./favourite');
+// const favourite = require('./favourite');
 
 const homeSchema = mongoose.Schema({
     houseName: {type: String, required: true},
@@ -9,6 +9,8 @@ const homeSchema = mongoose.Schema({
     rating: {type: Number, required: true},
     photoUrl: String,
     description: String,
+
+    hostId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
 });
 
 homeSchema.pre('findOneAndDelete', async function(next){
